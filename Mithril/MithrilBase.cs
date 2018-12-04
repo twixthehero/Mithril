@@ -134,6 +134,9 @@ namespace Mithril
 		public void FireDisconnectEvent(int connectionId, byte reason)
 		{
 			Disconnect?.Invoke(connectionId, reason);
+
+			Connections[connectionId].Cleanup();
+			Connections.Remove(connectionId);
 		}
 
 		public void Shutdown()

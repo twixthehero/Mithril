@@ -200,6 +200,9 @@ namespace Mithril
 					Packets[id]?.Timer.Stop();
 					CancelSend(id);
 					break;
+				case Common.DISCONNECT:
+					Receiver.FireDisconnectEvent(Id, buffer.ReadByte());
+					break;
 			}
 
 			pingTimer.Stop();
@@ -233,6 +236,12 @@ namespace Mithril
 			Mithril.Buffer packet = new Mithril.Buffer();
 			packet.WriteByte(Common.PING);
 			Send(packet);
+		}
+
+		public void Cleanup()
+		{
+			expectingTimeout.Stop();
+			pingTimer.Stop();
 		}
 
 		class ReliablePacket
